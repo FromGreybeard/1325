@@ -1,301 +1,134 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horizontal Signal Simulation - Marquee Note</title>
-    <style>
-        /* --- CSS STYLING (Internal) --- */
+/* --- CSS STYLING (Internal) --- */
 
-        /* Basic Reset and Layout */
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #222; 
-            color: #eee;
-        }
+/* Basic Reset and Layout */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #222; 
+    color: #eee;
+}
 
-        /* Signal Container - The traffic light housing */
-        .signal-container {
-            background-color: #1a1a1a;
-            padding: 20px 30px;
-            border-radius: 25px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
-            margin-bottom: 40px;
-            border: 3px solid #333;
-        }
+/* Signal Container - The traffic light housing */
+.signal-container {
+    background-color: #1a1a1a;
+    padding: 20px 30px;
+    border-radius: 25px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
+    margin-bottom: 40px;
+    border: 3px solid #333;
+}
 
-        /* The Signal Lights Wrapper - HORIZONTAL LAYOUT */
-        .signal {
-            display: flex;
-            flex-direction: row; 
-            gap: 25px;
-            background-color: transparent;
-        }
+/* The Signal Lights Wrapper - HORIZONTAL LAYOUT */
+.signal {
+    display: flex;
+    flex-direction: row; 
+    gap: 25px;
+    background-color: transparent;
+}
 
-        /* Generic Light Container */
-        .light {
-            width: 100px;
-            height: 100px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #0d0d0d;
-            border-radius: 50%; 
-            border: 2px solid #333; 
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); 
-        }
+/* Generic Light Container */
+.light {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0d0d0d;
+    border-radius: 50%; 
+    border: 2px solid #333; 
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); 
+}
 
-        /* --- SHAPE DEFINITIONS & SVG STYLING --- */
+/* --- SHAPE DEFINITIONS & SVG STYLING --- */
 
-        /* SVG Arrow Base Style */
-        .arrow-svg {
-            width: 50px;
-            height: 70px;
-            transition: all 0.2s ease-in-out;
-        }
-        
-        /* SVG Path Default (Off) Color */
-        .arrow-path {
-            fill: #444; 
-            transition: fill 0.2s ease-in-out;
-        }
+/* SVG Arrow Base Style */
+.arrow-svg {
+    width: 50px;
+    height: 70px;
+    transition: all 0.2s ease-in-out;
+}
 
-        /* Circle Shape */
-        .circle-shape {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: transparent; 
-            border: 3px solid #444; 
-            box-sizing: border-box;
-            transition: all 0.2s ease-in-out;
-        }
-        
-        /* Backward Arrow Rotation */
-        #backArrow .arrow-svg {
-            transform: rotate(180deg);
-        }
+/* SVG Path Default (Off) Color */
+.arrow-path {
+    fill: #444; 
+    transition: fill 0.2s ease-in-out;
+}
 
-        /* --- ACTIVE STATES (COLORS & EFFECTS) --- */
-        
-        /* State 4: Steady Red Circle */
-        .light.active-red .circle-shape {
-            background-color: #ff0000;
-            border-color: #ff0000;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.9);
-        }
+/* Circle Shape */
+.circle-shape {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: transparent; 
+    border: 3px solid #444; 
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+}
 
-        /* States 2 & 5: Steady Green Arrow (Color application) */
-        .light.active-green .arrow-path {
-            fill: #00ff00; 
-            filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.9)); 
-        }
-        
-        /* State 3: Flashing Green Animation */
-        @keyframes flash {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.15; }
-        }
+/* Backward Arrow Rotation */
+#backArrow .arrow-svg {
+    transform: rotate(180deg);
+}
 
-        /* State 3: Flashing Green Arrow */
-        .light.flashing-green .arrow-path {
-            fill: #00ff00;
-            filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.9));
-            animation: flash 0.5s infinite alternate;
-        }
+/* --- ACTIVE STATES (COLORS & EFFECTS) --- */
+
+/* State 4: Steady Red Circle */
+.light.active-red .circle-shape {
+    background-color: #ff0000;
+    border-color: #ff0000;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.9);
+}
+
+/* States 2 & 5: Steady Green Arrow (Color application) */
+.light.active-green .arrow-path {
+    fill: #00ff00; 
+    filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.9)); 
+}
+
+/* State 3: Flashing Green Animation */
+@keyframes flash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.15; }
+}
+
+/* State 3: Flashing Green Arrow */
+.light.flashing-green .arrow-path {
+    fill: #00ff00;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.9));
+    animation: flash 0.5s infinite alternate;
+}
 
 
-        /* --- Button Styling --- */
-        .controls {
-            text-align: center;
-            margin-top: 30px;
-            margin-bottom: 30px;
-        }
-        .controls h3 {
-            margin-bottom: 15px;
-            color: #eee;
-        }
-        .controls button {
-            padding: 12px 22px;
-            margin: 6px;
-            border: none;
-            border-radius: 30px;
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            font-size: 17px;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-        }
-        .controls button:hover {
-            background-color: #45a049;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.5);
-        }
-        .controls button:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-
-        /* --- MARQUEE STATUS BOX STYLING --- */
-        #statusBox {
-            width: 450px; /* Match the approximate width of the signal container */
-            height: 40px;
-            background-color: #000;
-            border: 2px solid #555;
-            border-radius: 5px;
-            overflow: hidden; /* Important for marquee effect */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1em;
-            color: #FFD700; /* Gold/Yellow text color for visibility */
-            padding: 0 10px;
-        }
-        #statusMarquee {
-            /* The element that contains the moving text */
-            white-space: nowrap;
-            display: none; /* Hidden by default */
-        }
-        .error-text {
-            color: #ff5555; /* Red color for error/important message */
-        }
-    </style>
-</head>
-<body>
-
-    <div class="signal-container">
-        <div class="signal">
-            
-            <div id="upArrow" class="light">
-                <svg class="arrow-svg" viewBox="0 0 50 70">
-                    <path class="arrow-path" d="M 25,0 L 45,30 L 35,30 L 35,70 L 15,70 L 15,30 L 5,30 Z"/>
-                </svg>
-            </div>
-            
-            <div id="circleRed" class="light">
-                <div class="circle-shape"></div>
-            </div>
-            
-            <div id="backArrow" class="light">
-                <svg class="arrow-svg" viewBox="0 0 50 70">
-                    <path class="arrow-path" d="M 25,0 L 45,30 L 35,30 L 35,70 L 15,70 L 15,30 L 5,30 Z"/>
-                </svg>
-            </div>
-        </div>
-    </div>
-
-    <div class="controls">
-        <h3>Change Signal State:</h3>
-        <button onclick="setSignal('off')">1. No Signal</button>
-        <button onclick="setSignal('steady-green-up')">2. Steady Green Up</button>
-        <button onclick="setSignal('flashing-green-up')">3. Flashing Green Up</button>
-        <button onclick="setSignal('steady-red')">4. Steady Red</button>
-        <button onclick="setSignal('steady-green-back')">5. Steady Green Backward</button>
-    </div>
-
-    <div id="statusBox">
-        <marquee id="statusMarquee" behavior="scroll" direction="left" scrollamount="4">
-            <span id="marqueeText">Welcome to the Signal Simulation. Choose a state.</span>
-        </marquee>
-        <span id="defaultText">Welcome to the Signal Simulation. Choose a state.</span>
-    </div>
-
-    <script>
-        // --- JAVASCRIPT LOGIC (Internal) ---
-
-        // Get all signal container elements
-        const upArrowLight = document.getElementById('upArrow');
-        const circleRedLight = document.getElementById('circleRed');
-        const backArrowLight = document.getElementById('backArrow');
-        const statusMarquee = document.getElementById('statusMarquee');
-        const marqueeTextSpan = document.getElementById('marqueeText');
-        const defaultTextSpan = document.getElementById('defaultText');
-
-        // All classes that define an active state or animation
-        const activeClasses = ['active-green', 'active-red', 'flashing-green'];
-
-        /**
-         * Clears all active and flashing classes from all signal elements.
-         */
-        function clearAllSignals() {
-            upArrowLight.classList.remove(...activeClasses);
-            circleRedLight.classList.remove(...activeClasses);
-            backArrowLight.classList.remove(...activeClasses);
-        }
-
-        /**
-         * Updates the scrolling text area.
-         * @param {string} text - The message to display.
-         * @param {boolean} isSpecial - If true, use red styling and continuous scroll.
-         */
-        function updateStatusMarquee(text, isSpecial = false) {
-            marqueeTextSpan.textContent = text;
-            
-            if (isSpecial) {
-                // For special note, make the text red and start the marquee
-                marqueeTextSpan.classList.add('error-text');
-                defaultTextSpan.style.display = 'none';
-                statusMarquee.style.display = 'block';
-                statusMarquee.start();
-            } else {
-                // For default messages, stop the marquee and hide it
-                marqueeTextSpan.classList.remove('error-text');
-                defaultTextSpan.textContent = text; // Update the static text
-                defaultTextSpan.style.display = 'block';
-                statusMarquee.style.display = 'none';
-                statusMarquee.stop();
-            }
-        }
-
-        /**
-         * Sets the traffic signal to one of the five specified states.
-         * @param {string} state - The desired signal state.
-         */
-        function setSignal(state) {
-            clearAllSignals();
-
-            switch (state) {
-                case 'off':
-                    updateStatusMarquee("Signal is OFF.");
-                    break;
-
-                case 'steady-green-up':
-                    upArrowLight.classList.add('active-green');
-                    updateStatusMarquee("Steady Green: Proceed with caution");
-                    break;
-
-                case 'flashing-green-up':
-                    upArrowLight.classList.add('flashing-green');
-                    updateStatusMarquee("Flashing Green: Prepare to Stop");
-                    break;
-
-                case 'steady-red':
-                    circleRedLight.classList.add('active-red');
-                    updateStatusMarquee("Steady RED: STOP.");
-                    break;
-
-                case 'steady-green-back':
-                    // Activate the signal light
-                    backArrowLight.classList.add('active-green');
-                    
-                    // Display the required moving operational note
-                    const shunterNote = "🚨 OPERATIONAL NOTE 🚨 CALL THE SHUNTER TO TAKE THE AUTHORITY TO PROPEL THE TRAIN. 🚨 OPERATIONAL NOTE 🚨";
-                    updateStatusMarquee(shunterNote, true); // True flag activates moving text
-                    break;
-            }
-        }
-
-        // Initialize to the "No Signal" state when the page loads
-        setSignal('off');
-    </script>
-</body>
-</html>
+/* --- Button Styling --- */
+.controls {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.controls h3 {
+    margin-bottom: 15px;
+    color: #eee;
+}
+.controls button {
+    padding: 12px 22px;
+    margin: 6px;
+    border: none;
+    border-radius: 30px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+.controls button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.5
